@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inkwell | Creative Writing & Journaling</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&family=Caveat:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Reset and Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #00897B;
+      --primary-light: #4DB6AC;
+      --primary-dark: #004D40;
+      --accent: #D4AF37;
+      --accent-light: #F5E7A3;
+      --light: #E0F2F1;
+      --dark: #263238;
+      --white: #FFFFFF;
+      --gray: #607D8B;
+      --gradient: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+      --accent-gradient: linear-gradient(135deg, var(--accent) 0%, #F5E7A3 100%);
+    }
+
+    body {
+      font-family: 'Lato', sans-serif;
+      color: var(--dark);
+      background-color: var(--light);
+      line-height: 1.6;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Animated Background */
+    .animated-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.4;
+      overflow: hidden;
+    }
+
+    .floating-shape {
+      position: absolute;
+      background-color: var(--primary-light);
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.2;
+      animation: float-animation var(--duration) infinite ease-in-out;
+    }
+
+    .ink-splatter {
+      position: absolute;
+      opacity: 0.05;
+      transform: rotate(var(--rotation));
+    }
+
+    /* Header Styles */
+    header {
+      background: var(--gradient);
+      color: var(--white);
+      padding: 2rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 77, 64, 0.2);
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .header-decoration {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 30%, rgba(77, 182, 172, 0.4) 0%, transparent 30%),
+        radial-gradient(circle at 80% 70%, rgba(77, 182, 172, 0.4) 0%, transparent 30%);
+      z-index: 1;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      font-weight: 300;
+    }
+
+    .student-info {
+      font-style: italic;
+      font-size: 0.9rem;
+      margin-top: 1.5rem;
+      opacity: 0.9;
+    }
+
+    /* Main Container */
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+
+    /* Section Styles */
+    .section {
+      padding: 2rem 0;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: var(--primary-dark);
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 3px;
+      background: var(--accent-gradient);
+      border-radius: 3px;
+    }
+
+    .section-intro {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 3rem;
+      font-size: 1.1rem;
+      color: var(--gray);
+    }
+
+    /* Card Grid */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(1, 1fr);
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1024px) {
+      .card-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    /* Feature Card */
+    .feature-card {
+      background-color: var(--white);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 77, 64, 0.1);
+      transition: all 0.3s ease;
+      position: relative;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(0, 77, 64, 0.2);
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: var(--accent-gradient);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin: 2rem 0 1rem;
+      text-align: center;
+    }
+
+    .card-content {
+      padding: 1.5rem;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .card-description {
+      color: var(--gray);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      flex-grow: 1;
+    }
+
+    .card-button {
+      display: block;
+      width: 100%;
+      padding: 0.8rem;
+      background: var(--gradient);
+      color: var(--white);
+      border: none;
+      border-radius: 30px;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(0, 137, 123, 0.3);
+    }
+
+    .card-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 137, 123, 0.4);
+    }
+
+    /* Prompt Generator */
+    .prompt-container {
+      background-color: var(--white);
+      border-radius: 15px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0, 77, 64, 0.1);
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prompt-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: var(--accent-gradient);
+    }
+
+    .prompt-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .prompt-text {
+      font-family: 'Caveat', cursive;
+      font-size: 1.8rem;
+      color: var(--dark);
+      margin: 2rem 0;
+      min-height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1.4;
+      padding: 0 1rem;
+    }
+
+    .prompt-button {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background: var(--gradient);
+      color: var(--white);
+      border: none;
+      border-radius: 30px;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 137, 123, 0.3);
+    }
+
+    .prompt-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 137, 123, 0.4);
+    }
+
+    .prompt-categories {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin: 1.5rem 0;
+    }
+
+    .category-button {
+      padding: 0.5rem 1rem;
+      background-color: var(--light);
+      color: var(--primary-dark);
+      border: 1px solid var(--primary-light);
+      border-radius: 20px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .category-button:hover, .category-button.active {
+      background-color: var(--primary);
+      color: var(--white);
+    }
+
+    /* Journal Creator */
+    .journal-container {
+      background-color: var(--white);
+      border-radius: 15px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0, 77, 64, 0.1);
+      margin-bottom: 2rem;
+    }
+
+    .journal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .journal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .form-input, .form-textarea {
+      padding: 0.8rem 1rem;
+      border: 2px solid var(--light);
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(77, 182, 172, 0.2);
+    }
+
+    .form-textarea {
+      min-height: 200px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .word-counter {
+      font-size: 0.9rem;
+      color: var(--gray);
+      text-align: right;
+      margin-top: 0.5rem;
+    }
+
+    .mood-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .mood-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .mood-radio {
+      display: none;
+    }
+
+    .mood-indicator {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .mood-radio:checked + .mood-indicator {
+      transform: scale(1.2);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .mood-happy {
+      background-color: #4CAF50;
+    }
+
+    .mood-calm {
+      background-color: #2196F3;
+    }
+
+    .mood-inspired {
+      background-color: #9C27B0;
+    }
+
+    .mood-anxious {
+      background-color: #FF9800;
+    }
+
+    .mood-sad {
+      background-color: #607D8B;
+    }
+
+    .save-button {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: var(--gradient);
+      color: var(--white);
+      border: none;
+      border-radius: 30px;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 137, 123, 0.3);
+      margin-top: 1rem;
+    }
+
+    .save-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 137, 123, 0.4);
+    }
+
+    /* Writing Tips */
+    .tips-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (min-width: 768px) {
+      .tips-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .tip-card {
+      background-color: var(--white);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 77, 64, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .tip-header {
+      padding: 1.5rem;
+      background: var(--gradient);
+      color: var(--white);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .tip-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      margin: 0;
+    }
+
+    .tip-icon {
+      transition: transform 0.3s ease;
+    }
+
+    .tip-content {
+      padding: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .tip-card.active .tip-content {
+      padding: 1.5rem;
+      max-height: 500px;
+    }
+
+    .tip-card.active .tip-icon {
+      transform: rotate(180deg);
+    }
+
+    /* Goal Tracker */
+    .goal-container {
+      background-color: var(--white);
+      border-radius: 15px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0, 77, 64, 0.1);
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+
+    .goal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    .goal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .goal-input-group {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .goal-input {
+      flex-grow: 1;
+      padding: 0.8rem 1rem;
+      border: 2px solid var(--light);
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .goal-input:focus {
+      outline: none;
+      border-color: var(--primary-light);
+      box-shadow: 0 0 0 3px rgba(77, 182, 172, 0.2);
+    }
+
+    .goal-button {
+      padding: 0.8rem 1.5rem;
+      background: var(--gradient);
+      color: var(--white);
+      border: none;
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 137, 123, 0.3);
+    }
+
+    .goal-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 137, 123, 0.4);
+    }
+
+    .goal-display {
+      margin-top: 2rem;
+      display: none;
+    }
+
+    .goal-progress-container {
+      width: 100%;
+      height: 20px;
+      background-color: var(--light);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+
+    .goal-progress-bar {
+      height: 100%;
+      background: var(--accent-gradient);
+      width: 0;
+      transition: width 0.5s ease;
+    }
+
+    .goal-stats {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    /* Saved Entries */
+    .entries-container {
+      background-color: var(--white);
+      border-radius: 15px;
+      padding: 2.5rem;
+      box-shadow: 0 10px 30px rgba(0, 77, 64, 0.1);
+    }
+
+    .entries-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .entries-list {
+      list-style: none;
+      padding: 0;
+    }
+
+    .entry-item {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--light);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .entry-item:last-child {
+      border-bottom: none;
+    }
+
+    .entry-item:hover {
+      background-color: var(--light);
+    }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .entry-title {
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .entry-date {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    .entry-mood {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 0.5rem;
+    }
+
+    .entry-preview {
+      color: var(--gray);
+      font-size: 0.9rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .no-entries {
+      text-align: center;
+      color: var(--gray);
+      padding: 2rem;
+    }
+
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 50px;
+      height: 50px;
+      background: var(--gradient);
+      color: var(--white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 137, 123, 0.3);
+      z-index: 100;
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 15px rgba(0, 137, 123, 0.4);
+    }
+
+    /* Dark Theme */
+    body.dark-theme {
+      background-color: #121212;
+      color: #E0E0E0;
+    }
+
+    body.dark-theme .feature-card,
+    body.dark-theme .prompt-container,
+    body.dark-theme .journal-container,
+    body.dark-theme .tip-card,
+    body.dark-theme .goal-container,
+    body.dark-theme .entries-container {
+      background-color: #1E1E1E;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-theme .section-title,
+    body.dark-theme .card-title,
+    body.dark-theme .prompt-title,
+    body.dark-theme .journal-title,
+    body.dark-theme .tip-title,
+    body.dark-theme .goal-title,
+    body.dark-theme .entries-title,
+    body.dark-theme .entry-title,
+    body.dark-theme .form-label {
+      color: var(--primary-light);
+    }
+
+    body.dark-theme .section-intro,
+    body.dark-theme .card-description,
+    body.dark-theme .entry-preview,
+    body.dark-theme .entry-date,
+    body.dark-theme .word-counter,
+    body.dark-theme .goal-stats {
+      color: #AAAAAA;
+    }
+
+    body.dark-theme .form-input,
+    body.dark-theme .form-textarea,
+    body.dark-theme .goal-input {
+      background-color: #2D2D2D;
+      border-color: #333333;
+      color: #E0E0E0;
+    }
+
+    body.dark-theme .category-button {
+      background-color: #2D2D2D;
+      color: var(--primary-light);
+      border-color: #333333;
+    }
+
+    body.dark-theme .category-button:hover,
+    body.dark-theme .category-button.active {
+      background-color: var(--primary);
+      color: var(--white);
+    }
+
+    body.dark-theme .entry-item:hover {
+      background-color: #2D2D2D;
+    }
+
+    body.dark-theme .goal-progress-container {
+      background-color: #2D2D2D;
+    }
+
+    /* Animations */
+    @keyframes float-animation {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(10px, 10px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    @keyframes fade-in {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Footer */
+    footer {
+      background: var(--primary-dark);
+      color: var(--white);
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .footer-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .footer-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .footer-text {
+      margin-bottom: 2rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      color: var(--white);
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .social-link:hover {
+      background-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background-color: var(--white);
+      border-radius: 15px;
+      padding: 2rem;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow-y: auto;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    body.dark-theme .modal {
+      background-color: #1E1E1E;
+    }
+
+    .modal-overlay.active .modal {
+      transform: translateY(0);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--gray);
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      color: var(--primary);
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--primary-dark);
+      margin-bottom: 1.5rem;
+    }
+
+    body.dark-theme .modal-title {
+      color: var(--primary-light);
+    }
+
+    .modal-content {
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .modal-button {
+      padding: 0.8rem 1.5rem;
+      background: var(--gradient);
+      color: var(--white);
+      border: none;
+      border-radius: 30px;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 137, 123, 0.3);
+    }
+
+    .modal-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(0, 137, 123, 0.4);
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="animated-bg" id="animated-bg"></div>
+
+  <!-- Theme Toggle -->
+  <div class="theme-toggle" id="theme-toggle">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+    </svg>
+  </div>
+
+  <!-- Header Section -->
+  <header>
+    <div class="header-decoration"></div>
+    <div class="header-content">
+      <h1>Inkwell</h1>
+      <p class="subtitle">Unleash Your Creativity Through Journaling & Writing</p>
+      <p class="student-info">Daren Miguel N. Feliciano | 12 STEM Isaac Newton</p>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Introduction Section -->
+    <section class="section">
+      <h2 class="section-title">Begin Your Writing Journey</h2>
+      <p class="section-intro">
+        Welcome to Inkwell, your creative sanctuary for journaling and writing. Whether you're looking to develop a daily 
+        journaling practice, overcome writer's block, or simply explore your thoughts through words, you'll find tools and 
+        inspiration to guide your journey.
+      </p>
+
+      <div class="card-grid">
+        <!-- Feature Card 1 -->
+        <div class="feature-card">
+          <div class="card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+              <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+              <path d="M2 2l7.586 7.586"></path>
+              <circle cx="11" cy="11" r="2"></circle>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Writing Prompts</h3>
+            <p class="card-description">
+              Discover creative prompts to inspire your writing and overcome blank page anxiety. From reflective journaling to fiction starters, we've got you covered.
+            </p>
+            <a href="#prompt-generator" class="card-button">Explore Prompts</a>
+          </div>
+        </div>
+
+        <!-- Feature Card 2 -->
+        <div class="feature-card">
+          <div class="card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Journal Creator</h3>
+            <p class="card-description">
+              Create and save your journal entries with our intuitive editor. Track your mood, add tags, and build a personal archive of your thoughts.
+            </p>
+            <a href="#journal-creator" class="card-button">Start Journaling</a>
+          </div>
+        </div>
+
+        <!-- Feature Card 3 -->
+        <div class="feature-card">
+          <div class="card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 11 12 14 22 4"></polyline>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            </svg>
+          </div>
+          <div class="card-content">
+            <h3 class="card-title">Writing Goals</h3>
+            <p class="card-description">
+              Set and track your writing goals to build consistency. Whether it's daily word counts or weekly journaling sessions, stay motivated and accountable.
+            </p>
+            <a href="#goal-tracker" class="card-button">Set Goals</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prompt Generator Section -->
+    <section class="section" id="prompt-generator">
+      <h2 class="section-title">Writing Prompt Generator</h2>
+      <p class="section-intro">
+        Need inspiration? Generate creative writing prompts to spark your imagination and overcome writer's block.
+      </p>
+
+      <div class="prompt-container">
+        <h3 class="prompt-title">Your Writing Prompt</h3>
+        
+        <div class="prompt-categories">
+          <button class="category-button active" data-category="all">All Prompts</button>
+          <button class="category-button" data-category="journal">Journaling</button>
+          <button class="category-button" data-category="fiction">Fiction</button>
+          <button class="category-button" data-category="poetry">Poetry</button>
+          <button class="category-button" data-category="reflection">Reflection</button>
+          <button class="category-button" data-category="creative">Creative</button>
+        </div>
+        
+        <div class="prompt-text" id="prompt-text">
+          Click the button below to generate a writing prompt and begin your creative journey.
+        </div>
+        
+        <button class="prompt-button" id="generate-prompt">Generate Prompt</button>
+      </div>
+    </section>
+
+    <!-- Journal Creator Section -->
+    <section class="section" id="journal-creator">
+      <h2 class="section-title">Journal Entry Creator</h2>
+      <p class="section-intro">
+        Capture your thoughts, feelings, and experiences in a structured journal entry. Save your entries to build a personal archive of your writing journey.
+      </p>
+
+      <div class="journal-container">
+        <h3 class="journal-title">Create New Entry</h3>
+        
+        <form class="journal-form" id="journal-form">
+          <div class="form-group">
+            <label for="entry-title" class="form-label">Entry Title</label>
+            <input type="text" id="entry-title" class="form-input" placeholder="Give your entry a title...">
+          </div>
+          
+          <div class="form-group">
+            <label for="entry-date" class="form-label">Date</label>
+            <input type="date" id="entry-date" class="form-input">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Mood</label>
+            <div class="mood-selector">
+              <label class="mood-option">
+                <input type="radio" name="mood" value="happy" class="mood-radio">
+                <span class="mood-indicator mood-happy">😊</span>
+                Happy
+              </label>
+              <label class="mood-option">
+                <input type="radio" name="mood" value="calm" class="mood-radio">
+                <span class="mood-indicator mood-calm">😌</span>
+                Calm
+              </label>
+              <label class="mood-option">
+                <input type="radio" name="mood" value="inspired" class="mood-radio">
+                <span class="mood-indicator mood-inspired">✨</span>
+                Inspired
+              </label>
+              <label class="mood-option">
+                <input type="radio" name="mood" value="anxious" class="mood-radio">
+                <span class="mood-indicator mood-anxious">😟</span>
+                Anxious
+              </label>
+              <label class="mood-option">
+                <input type="radio" name="mood" value="sad" class="mood-radio">
+                <span class="mood-indicator mood-sad">😔</span>
+                Sad
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="entry-content" class="form-label">Journal Entry</label>
+            <textarea id="entry-content" class="form-textarea" placeholder="Begin writing your thoughts here..." oninput="countWords()"></textarea>
+            <div class="word-counter" id="word-counter">0 words</div>
+          </div>
+          
+          <button type="button" class="save-button" id="save-entry">Save Entry</button>
+        </form>
+      </div>
+
+      <div class="entries-container">
+        <h3 class="entries-title">Your Journal Entries</h3>
+        
+        <ul class="entries-list" id="entries-list">
+          <li class="no-entries" id="no-entries">No entries yet. Start journaling to see your entries here.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Writing Tips Section -->
+    <section class="section">
+      <h2 class="section-title">Writing Tips & Techniques</h2>
+      <p class="section-intro">
+        Explore these writing tips and techniques to enhance your journaling practice and develop your creative writing skills.
+      </p>
+
+      <div class="tips-container">
+        <!-- Tip 1 -->
+        <div class="tip-card">
+          <div class="tip-header" onclick="toggleTip(this.parentElement)">
+            <h3 class="tip-title">Freewriting</h3>
+            <svg class="tip-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="tip-content">
+            <p>Freewriting is a powerful technique to overcome writer's block and tap into your subconscious mind. Here's how to practice it:</p>
+            <ul>
+              <li>Set a timer for 10-15 minutes</li>
+              <li>Write continuously without stopping</li>
+              <li>Don't worry about grammar, spelling, or punctuation</li>
+              <li>If you get stuck, write "I'm stuck" until new ideas flow</li>
+              <li>Don't self-censor or judge what you're writing</li>
+            </ul>
+            <p>Regular freewriting can help you discover new ideas, clear mental clutter, and develop a more natural writing voice.</p>
+          </div>
+        </div>
+
+        <!-- Tip 2 -->
+        <div class="tip-card">
+          <div class="tip-header" onclick="toggleTip(this.parentElement)">
+            <h3 class="tip-title">Morning Pages</h3>
+            <svg class="tip-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="tip-content">
+            <p>Developed by Julia Cameron in "The Artist's Way," morning pages are three pages of longhand, stream-of-consciousness writing done first thing in the morning.</p>
+            <p>Benefits include:</p>
+            <ul>
+              <li>Clearing your mind for the day ahead</li>
+              <li>Identifying patterns in your thinking</li>
+              <li>Processing emotions and reducing anxiety</li>
+              <li>Sparking creativity throughout the day</li>
+              <li>Building a consistent writing habit</li>
+            </ul>
+            <p>There are no rules about content—write whatever comes to mind, even if it's "I don't know what to write" repeatedly until something else emerges.</p>
+          </div>
+        </div>
+
+        <!-- Tip 3 -->
+        <div class="tip-card">
+          <div class="tip-header" onclick="toggleTip(this.parentElement)">
+            <h3 class="tip-title">Sensory Description</h3>
+            <svg class="tip-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="tip-content">
+            <p>Enhance your writing by incorporating all five senses to create vivid, immersive descriptions:</p>
+            <ul>
+              <li><strong>Sight:</strong> Colors, shapes, movements, light and shadow</li>
+              <li><strong>Sound:</strong> Volume, pitch, rhythm, natural or artificial sounds</li>
+              <li><strong>Touch:</strong> Texture, temperature, weight, pressure</li>
+              <li><strong>Smell:</strong> Fresh or stale, pleasant or unpleasant, familiar associations</li>
+              <li><strong>Taste:</strong> Sweet, sour, bitter, salty, umami, combinations</li>
+            </ul>
+            <p>Practice exercise: Choose an ordinary object and describe it using all five senses. This trains your observation skills and enriches your descriptive vocabulary.</p>
+          </div>
+        </div>
+
+        <!-- Tip 4 -->
+        <div class="tip-card">
+          <div class="tip-header" onclick="toggleTip(this.parentElement)">
+            <h3 class="tip-title">Reflective Journaling</h3>
+            <svg class="tip-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </div>
+          <div class="tip-content">
+            <p>Reflective journaling goes beyond recording events to explore their meaning and impact on your life. Try these prompts for deeper reflection:</p>
+            <ul>
+              <li>What surprised me today and why?</li>
+              <li>What am I grateful for in this moment?</li>
+              <li>What challenged me recently and what did I learn?</li>
+              <li>How did I respond to difficulty, and would I change my response?</li>
+              <li>What patterns am I noticing in my thoughts or behaviors?</li>
+            </ul>
+            <p>For maximum benefit, set aside uninterrupted time, be honest with yourself, look for patterns across entries, and review your reflections periodically to track your growth.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Goal Tracker Section -->
+    <section class="section" id="goal-tracker">
+      <h2 class="section-title">Writing Goal Tracker</h2>
+      <p class="section-intro">
+        Set and track your writing goals to build consistency and measure your progress over time.
+      </p>
+
+      <div class="goal-container">
+        <h3 class="goal-title">Set Your Writing Goal</h3>
+        
+        <form class="goal-form">
+          <div class="goal-input-group">
+            <input type="number" id="goal-words" class="goal-input" placeholder="Word count goal (e.g., 500)">
+            <button type="button" class="goal-button" id="set-goal">Set Goal</button>
+          </div>
+        </form>
+        
+        <div class="goal-display" id="goal-display">
+          <h4>Your Progress</h4>
+          <div class="goal-progress-container">
+            <div class="goal-progress-bar" id="goal-progress-bar"></div>
+          </div>
+          <div class="goal-stats">
+            <span id="current-words">0 words</span>
+            <span id="goal-target">of 0 words</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="entry-modal">
+    <div class="modal">
+      <button class="modal-close" id="modal-close">×</button>
+      <h3 class="modal-title" id="modal-title">Journal Entry</h3>
+      <div class="modal-content" id="modal-content"></div>
+      <div class="modal-footer">
+        <button class="modal-button" id="modal-close-btn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <h2 class="footer-title">Inkwell</h2>
+      <p class="footer-text">Your journey of self-discovery and creativity begins with a single word.</p>
+      
+      <div class="social-links">
+        <a href="#" class="social-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
+          </svg>
+        </a>
+        <a href="#" class="social-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
+          </svg>
+        </a>
+        <a href="#" class="social-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+          </svg>
+        </a>
+        <a href="#" class="social-link">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/>
+            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+          </svg>
+        </a>
+      </div>
+      
+      <p class="copyright">© 2023 Inkwell. Created by Daren Miguel N. Feliciano.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Create animated background
+    document.addEventListener('DOMContentLoaded', function() {
+      createAnimatedBackground();
+      
+      // Initialize date input to today
+      document.getElementById('entry-date').valueAsDate = new Date();
+      
+      // Initialize event listeners
+      document.getElementById('generate-prompt').addEventListener('click', generatePrompt);
+      document.getElementById('save-entry').addEventListener('click', saveEntry);
+      document.getElementById('set-goal').addEventListener('click', setGoal);
+      document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+      document.getElementById('modal-close').addEventListener('click', closeModal);
+      document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+      
+      // Initialize category buttons
+      const categoryButtons = document.querySelectorAll('.category-button');
+      categoryButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          categoryButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+          currentCategory = this.dataset.category;
+        });
+      });
+      
+      // Load saved entries
+      loadEntries();
+      
+      // Load saved goal
+      loadGoal();
+    });
+    
+    // Global variables
+    let currentCategory = 'all';
+    let wordCount = 0;
+    let currentGoal = 0;
+    
+    // Create animated background
+    function createAnimatedBackground() {
+      const bg = document.getElementById('animated-bg');
+      const shapeCount = 5;
+      
+      for (let i = 0; i < shapeCount; i++) {
+        const shape = document.createElement('div');
+        shape.classList.add('floating-shape');
+        
+        const size = Math.random() * 300 + 100;
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const duration = Math.random() * 20 + 10;
+        
+        shape.style.width = `${size}px`;
+        shape.style.height = `${size}px`;
+        shape.style.left = `${posX}%`;
+        shape.style.top = `${posY}%`;
+        shape.style.animationDuration = `${duration}s`;
+        shape.style.animationDelay = `${Math.random() * 5}s`;
+        shape.style.setProperty('--duration', `${duration}s`);
+        
+        bg.appendChild(shape);
+      }
+      
+      // Add ink splatters
+      for (let i = 0; i < 3; i++) {
+        const splatter = document.createElement('div');
+        splatter.classList.add('ink-splatter');
+        
+        const posX = Math.random() * 100;
+        const posY = Math.random() * 100;
+        const rotation = Math.random() * 360;
+        
+        splatter.style.left = `${posX}%`;
+        splatter.style.top = `${posY}%`;
+        splatter.style.setProperty('--rotation', `${rotation}deg`);
+        
+        bg.appendChild(splatter);
+      }
+    }
+    
+    // Toggle tip card
+    function toggleTip(card) {
+      card.classList.toggle('active');
+    }
+    
+    // Generate writing prompt
+    function generatePrompt() {
+      const promptElement = document.getElementById('prompt-text');
+      const prompts = {
+        journal: [
+          "What made you smile today and why?",
+          "Describe a challenge you're currently facing and three possible ways to overcome it.",
+          "Write about a person who has influenced your life significantly. How would you be different without them?",
+          "What are you grateful for today? List at least five things and explain why.",
+          "Reflect on a mistake you made recently. What did you learn from it?",
+          "What does your ideal day look like? Describe it from morning to night.",
+          "Write a letter to your future self one year from now.",
+          "What are your current priorities in life? Are they aligned with your values?",
+          "Describe a recent dream you had and what you think it might mean.",
+          "What boundaries do you need to set or reinforce in your life right now?"
+        ],
+        fiction: [
+          "Write a story that begins with: 'The door swung open to reveal...'",
+          "A character discovers they can hear other people's thoughts, but only when they're lying.",
+          "Two strangers are trapped in an elevator during a power outage.",
+          "Write about a world where everyone knows the exact date of their death.",
+          "A mysterious package arrives at your character's doorstep with no return address.",
+          "Your character wakes up to find they've switched bodies with their worst enemy.",
+          "Write a story about a library where books change their content each time they're opened.",
+          "A character discovers an old map in their grandmother's attic that leads to something unexpected.",
+          "Write about a town where it hasn't stopped raining for seven years.",
+          "Your character can suddenly understand the language of animals. What secrets do they learn?"
+        ],
+        poetry: [
+          "Write a poem about the changing seasons using all five senses.",
+          "Create a poem inspired by the last dream you remember.",
+          "Write a haiku about an everyday object, making it seem extraordinary.",
+          "Compose a poem about a color without naming the color directly.",
+          "Write a poem from the perspective of something inanimate (a chair, a stone, a star).",
+          "Create a poem using only questions.",
+          "Write a poem about a childhood memory that still affects you today.",
+          "Compose a poem about silence and what it contains.",
+          "Write a poem that begins and ends with the same line, but the meaning changes.",
+          "Create a poem about the passage of time without using numbers or time-related words."
+        ],
+        reflection: [
+          "What patterns do you notice in your life that you'd like to change?",
+          "Describe a moment when you felt truly at peace. What elements contributed to that feeling?",
+          "What does success mean to you, and how has that definition changed over time?",
+          "Write about something you're afraid of and why it scares you.",
+          "Reflect on a time when you surprised yourself with your own strength or resilience.",
+          "What parts of yourself do you hide from others, and why?",
+          "Write about a belief you once held strongly that has since changed.",
+          "What legacy would you like to leave behind?",
+          "Describe a moment when you felt completely understood by someone else.",
+          "What are you currently learning about yourself?"
+        ],
+        creative: [
+          "Write from the perspective of the oldest tree in a forest.",
+          "Describe a color to someone who has never been able to see.",
+          "Create a dialogue between the ocean and the shore.",
+          "Write about a memory from the perspective of an object that was present.",
+          "Imagine you can time travel to any period for 24 hours. Where would you go and why?",
+          "Write a love letter to a place that shaped you.",
+          "Create a character based on someone you observed briefly in public.",
+          "Write about what the world looks like in the hour before sunrise.",
+          "Describe a meal that tells a story about your heritage or identity.",
+          "Imagine finding a door in your home that wasn't there before. Where does it lead?"
+        ]
+      };
+      
+      // All prompts combined
+      prompts.all = [
+        ...prompts.journal,
+        ...prompts.fiction,
+        ...prompts.poetry,
+        ...prompts.reflection,
+        ...prompts.creative
+      ];
+      
+      // Get random prompt from selected category
+      const categoryPrompts = prompts[currentCategory];
+      const randomIndex = Math.floor(Math.random() * categoryPrompts.length);
+      const selectedPrompt = categoryPrompts[randomIndex];
+      
+      // Display prompt with animation
+      promptElement.style.opacity = 0;
+      setTimeout(() => {
+        promptElement.textContent = selectedPrompt;
+        promptElement.style.opacity = 1;
+      }, 300);
+    }
+    
+    // Count words in journal entry
+    function countWords() {
+      const text = document.getElementById('entry-content').value;
+      const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+      wordCount = words.length;
+      
+      document.getElementById('word-counter').textContent = `${wordCount} words`;
+      
+      // Update goal progress if goal is set
+      if (currentGoal > 0) {
+        updateGoalProgress(wordCount);
+      }
+    }
+    
+    // Save journal entry
+    function saveEntry() {
+      const title = document.getElementById('entry-title').value;
+      const date = document.getElementById('entry-date').value;
+      const moodElement = document.querySelector('input[name="mood"]:checked');
+      const content = document.getElementById('entry-content').value;
+      
+      if (!title || !date || !moodElement || !content) {
+        alert('Please fill out all fields');
+        return;
+      }
+      
+      const mood = moodElement.value;
+      
+      // Create entry object
+      const entry = {
+        id: Date.now(),
+        title,
+        date,
+        mood,
+        content,
+        wordCount
+      };
+      
+      // Get existing entries or initialize empty array
+      let entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+      
+      // Add new entry
+      entries.push(entry);
+      
+      // Save to localStorage
+      localStorage.setItem('journalEntries', JSON.stringify(entries));
+      
+      // Reset form
+      document.getElementById('journal-form').reset();
+      document.getElementById('entry-date').valueAsDate = new Date();
+      document.getElementById('entry-content').value = '';
+      document.getElementById('word-counter').textContent = '0 words';
+      wordCount = 0;
+      
+      // Reload entries
+      loadEntries();
+      
+      // Show confirmation
+      alert('Entry saved successfully!');
+    }
+    
+    // Load journal entries
+    function loadEntries() {
+      const entriesList = document.getElementById('entries-list');
+      const noEntries = document.getElementById('no-entries');
+      
+      // Get entries from localStorage
+      const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+      
+      // Clear entries list
+      entriesList.innerHTML = '';
+      
+      if (entries.length === 0) {
+        entriesList.appendChild(noEntries);
+        noEntries.style.display = 'block';
+      } else {
+        noEntries.style.display = 'none';
+        
+        // Sort entries by date (newest first)
+        entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        // Add entries to list
+        entries.forEach(entry => {
+          const entryItem = document.createElement('li');
+          entryItem.classList.add('entry-item');
+          entryItem.dataset.id = entry.id;
+          
+          const entryHeader = document.createElement('div');
+          entryHeader.classList.add('entry-header');
+          
+          const entryTitle = document.createElement('span');
+          entryTitle.classList.add('entry-title');
+          entryTitle.innerHTML = `<span class="entry-mood ${entry.mood}"></span>${entry.title}`;
+          
+          const entryDate = document.createElement('span');
+          entryDate.classList.add('entry-date');
+          entryDate.textContent = formatDate(entry.date);
+          
+          entryHeader.appendChild(entryTitle);
+          entryHeader.appendChild(entryDate);
+          
+          const entryPreview = document.createElement('div');
+          entryPreview.classList.add('entry-preview');
+          entryPreview.textContent = truncateText(entry.content, 100);
+          
+          entryItem.appendChild(entryHeader);
+          entryItem.appendChild(entryPreview);
+          
+          // Add click event to view entry
+          entryItem.addEventListener('click', () => viewEntry(entry.id));
+          
+          entriesList.appendChild(entryItem);
+        });
+      }
+    }
+    
+    // Format date for display
+    function formatDate(dateString) {
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+    
+    // Truncate text for preview
+    function truncateText(text, maxLength) {
+      if (text.length <= maxLength) return text;
+      return text.substring(0, maxLength) + '...';
+    }
+    
+    // View entry details
+    function viewEntry(id) {
+      const entries = JSON.parse(localStorage.getItem('journalEntries')) || [];
+      const entry = entries.find(entry => entry.id === id);
+      
+      if (!entry) return;
+      
+      // Populate modal
+      document.getElementById('modal-title').textContent = entry.title;
+      
+      const content = document.getElementById('modal-content');
+      content.innerHTML = `
+        <p><strong>Date:</strong> ${formatDate(entry.date)}</p>
+        <p><strong>Mood:</strong> ${entry.mood.charAt(0).toUpperCase() + entry.mood.slice(1)}</p>
+        <p><strong>Word Count:</strong> ${entry.wordCount}</p>
+        <div style="margin-top: 1rem; white-space: pre-wrap;">${entry.content}</div>
+      `;
+      
+      // Show modal
+      document.getElementById('entry-modal').classList.add('active');
+    }
+    
+    // Close modal
+    function closeModal() {
+      document.getElementById('entry-modal').classList.remove('active');
+    }
+    
+    // Set writing goal
+    function setGoal() {
+      const goalInput = document.getElementById('goal-words');
+      const goalValue = parseInt(goalInput.value);
+      
+      if (isNaN(goalValue) || goalValue <= 0) {
+        alert('Please enter a valid word count goal');
+        return;
+      }
+      
+      currentGoal = goalValue;
+      
+      // Save goal to localStorage
+      localStorage.setItem('writingGoal', currentGoal);
+      
+      // Update display
+      document.getElementById('goal-target').textContent = `of ${currentGoal} words`;
+      document.getElementById('goal-display').style.display = 'block';
+      
+      // Update progress based on current word count
+      updateGoalProgress(wordCount);
+    }
+    
+    // Load saved goal
+    function loadGoal() {
+      const savedGoal = localStorage.getItem('writingGoal');
+      
+      if (savedGoal) {
+        currentGoal = parseInt(savedGoal);
+        document.getElementById('goal-words').value = currentGoal;
+        document.getElementById('goal-target').textContent = `of ${currentGoal} words`;
+        document.getElementById('goal-display').style.display = 'block';
+        
+        // Update progress based on current word count
+        updateGoalProgress(wordCount);
+      }
+    }
+    
+    // Update goal progress
+    function updateGoalProgress(words) {
+      const progressBar = document.getElementById('goal-progress-bar');
+      const currentWords = document.getElementById('current-words');
+      
+      const progress = Math.min((words / currentGoal) * 100, 100);
+      
+      progressBar.style.width = `${progress}%`;
+      currentWords.textContent = `${words} words`;
+    }
+    
+    // Toggle theme
+    function toggleTheme() {
+      document.body.classList.toggle('dark-theme');
+      
+      // Save theme preference
+      const isDarkTheme = document.body.classList.contains('dark-theme');
+      localStorage.setItem('darkTheme', isDarkTheme);
+      
+      // Update theme toggle icon
+      const themeToggle = document.getElementById('theme-toggle');
+      if (isDarkTheme) {
+        themeToggle.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        `;
+      } else {
+        themeToggle.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        `;
+      }
+    }
+    
+    // Load theme preference
+    document.addEventListener('DOMContentLoaded', function() {
+      const isDarkTheme = localStorage.getItem('darkTheme') === 'true';
+      
+      if (isDarkTheme) {
+        document.body.classList.add('dark-theme');
+        document.getElementById('theme-toggle').innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        `;
+      }
+    });
+    
+    // Add mood color styles
+    document.addEventListener('DOMContentLoaded', function() {
+      const style = document.createElement('style');
+      style.textContent = `
+        .entry-mood {
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+          margin-right: 8px;
+        }
+        .entry-mood.happy {
+          background-color: #4CAF50;
+        }
+        .entry-mood.calm {
+          background-color: #2196F3;
+        }
+        .entry-mood.inspired {
+          background-color: #9C27B0;
+        }
+        .entry-mood.anxious {
+          background-color: #FF9800;
+        }
+        .entry-mood.sad {
+          background-color: #607D8B;
+        }
+      `;
+      document.head.appendChild(style);
+    });
+  </script>
+</body>
+</html>
